@@ -8,7 +8,7 @@ buildscript {
 
 plugins {
     `java-library`
-    id("org.jetbrains.kotlin.jvm") version "1.3.31"
+    kotlin("jvm") version "1.3.31"
 }
 
 repositories {
