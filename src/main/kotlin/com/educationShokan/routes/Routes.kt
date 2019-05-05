@@ -6,5 +6,5 @@ import io.ktor.routing.route
 import io.ktor.routing.routing
 
 fun Application.routes() = routing {
-    route("/", Route::hello)
+    route("/project", Route::project)
 }
