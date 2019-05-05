@@ -7,6 +7,7 @@ import io.ktor.application.install
 import io.ktor.features.CORS
 import io.ktor.features.ContentNegotiation
 import io.ktor.jackson.jackson
+import io.ktor.routing.Routing
 
 fun Application.config() {
     install(ContentNegotiation) {
@@ -17,4 +18,5 @@ fun Application.config() {
     install(CORS) {
         allowSameOrigin = true
     }
+    install(Routing)
 }

@@ -8,6 +8,13 @@ data class Project(
     val files: List<String> = listOf()
 ) : Identifiable
 
+data class MediaFile(
+    @BsonId override var id: String = "",
+    val fileName: String,
+    val fileType: String,
+    val description: String
+) : Identifiable
+
 interface Identifiable {
     var id: String
 }
