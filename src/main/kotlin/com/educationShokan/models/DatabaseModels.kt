@@ -11,7 +11,7 @@ data class Project(
 data class MediaFile(
     @BsonId override var id: String = "",
     val fileName: String,
-    val fileType: String,
+    val mimeType: String,
     val description: String
 ) : Identifiable
 
