@@ -1,6 +1,7 @@
 package com.educationShokan.routes
 
 import com.educationShokan.exceptions.NotFoundException
+import com.educationShokan.exceptions.exceptionally
 import com.educationShokan.extensions.failure
 import com.educationShokan.extensions.success
 import com.educationShokan.models.Project
@@ -17,14 +18,10 @@ import io.ktor.routing.*
 fun Route.project() {
 
     get("/{id}") {
-        val id = call.parameters["id"] ?: ""
-        try {
+        exceptionally {
+            val id = call.parameters["id"] ?: ""
             val project = ProjectRepository.read(id)
             call.respond(project.success)
-        } catch (e: NotFoundException) {
-            val error = e.message?.failure ?: e.toString().failure
-            call.response.status(HttpStatusCode.NotFound)
-            call.respond(error)
         }
     }
 
