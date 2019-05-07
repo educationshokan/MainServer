@@ -30,6 +30,8 @@ abstract class CrudRepository<T: Identifiable>(
         listOf()
     }
 
+    suspend fun exists(id: String): Boolean = collection.countDocuments(idFilter(id)) > 0
+
     suspend fun delete(id: String): Boolean {
         val result = collection.deleteOne(idFilter(id))
         return result.deletedCount > 0

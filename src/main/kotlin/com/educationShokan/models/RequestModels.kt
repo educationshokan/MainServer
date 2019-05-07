@@ -12,3 +12,8 @@ data class FileUploadReq(val fileName: String, val description: String?) {
         description = this.description ?: ""
     )
 }
+
+data class FileAddReq(
+    val id: String?,
+    val idList: List<String>?
+)

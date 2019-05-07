@@ -10,7 +10,7 @@ import io.ktor.routing.route
 import io.ktor.routing.routing
 
 fun Application.routes() = routing {
-    trace { println(it.buildText()) }
+    //trace { println(it.buildText()) }
     route("/project", Route::project)
     route("/media", Route::mediaFile)
 }
