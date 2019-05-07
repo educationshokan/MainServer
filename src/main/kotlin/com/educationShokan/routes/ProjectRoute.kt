@@ -86,12 +86,15 @@ fun Route.project() {
             request.id?.let { sortAccepted(it) }
             request.idList?.run { forEach { sortAccepted(it) } }
             ProjectRepository.addFiles(project.id, addedList)
-            if (failedList.isEmpty()) {
-                call.respond(HttpStatusCode.NoContent)
-            } else {
-                val payload = addedList.map { mapOf("status" to "success", "id" to it, "code" to 204)} union
-                failedList.map { mapOf("status" to "failure", "id" to it, "code" to 404) }.toList()
-                call.respond(HttpStatusCode.MultiStatus, payload)
+            when {
+                failedList.isEmpty() -> call.respond(HttpStatusCode.NoContent)
+                addedList.isEmpty() -> call.respond(HttpStatusCode.NotFound, "")
+                else -> {
+                    val payload = addedList.map { mapOf("status" to "success", "id" to it, "code" to 204) } union
+                        failedList.map { mapOf("status" to "failure", "id" to it, "code" to 404) }
+                        .toList()
+                    call.respond(HttpStatusCode.MultiStatus, payload)
+                }
             }
         }
     }

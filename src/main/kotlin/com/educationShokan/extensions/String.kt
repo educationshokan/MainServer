@@ -4,7 +4,7 @@ import java.io.File
 import java.nio.file.Files
 
 val String.resourceFile: File
-    get() = File("src/main/resources/$this")
+    get() = File("${System.getProperty("user.dir")}/MainServerResources/$this")
 
 val String.mimeType: String
     get() {
