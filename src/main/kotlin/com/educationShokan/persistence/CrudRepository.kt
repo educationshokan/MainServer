@@ -39,7 +39,7 @@ abstract class CrudRepository<T: Identifiable>(
 
     suspend fun update(element: T) = collection.updateOneById(element.id, element)
 
-    fun idFilter(id: String): Bson {
+    private fun idFilter(id: String): Bson {
         val prop = clazz.memberProperties.find { it.name == "id" } ?: throw Exception("Reflection Prop not found")
         return prop eq id
     }

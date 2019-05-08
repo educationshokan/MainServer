@@ -17,3 +17,8 @@ data class FileAddReq(
     val id: String?,
     val idList: List<String>?
 )
+
+data class DeployReq(
+    val id: String,
+    val excludedFiles: List<String>?
+)

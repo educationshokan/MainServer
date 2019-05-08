@@ -13,4 +13,6 @@ fun Application.routes() = routing {
     //trace { println(it.buildText()) }
     route("/project", Route::project)
     route("/media", Route::mediaFile)
+    route("/deploy", Route::deploy)
+    route("/publish", Route::published)
 }

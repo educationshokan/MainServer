@@ -15,6 +15,11 @@ data class MediaFile(
     val description: String
 ) : Identifiable
 
+data class Deployment(
+    @BsonId override var id: String = "",
+    val operationStatus: String
+): Identifiable
+
 interface Identifiable {
     var id: String
 }
