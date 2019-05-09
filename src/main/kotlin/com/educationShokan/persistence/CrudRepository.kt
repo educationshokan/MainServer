@@ -11,7 +11,7 @@ import kotlin.reflect.full.memberProperties
 
 abstract class CrudRepository<T: Identifiable>(
     protected val collection: CoroutineCollection<T>,
-    private val clazz: KClass<T>
+    protected val clazz: KClass<T>
 ) {
 
     suspend fun create(element: T): String {

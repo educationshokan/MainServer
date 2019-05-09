@@ -44,7 +44,7 @@ fun Route.mediaFile() {
     }
 
     get {
-        val fileList = MediaRepository.readAll()
+        val fileList = MediaRepository.readAllId()
         call.respond(fileList.success)
     }
 

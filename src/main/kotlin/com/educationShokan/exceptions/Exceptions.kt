@@ -16,6 +16,9 @@ suspend fun PipelineContext<Unit, ApplicationCall>.exceptionally(
     } catch (e: NotFoundException) {
         val error = e.message?.failure ?: e.toString().failure
         this.call.respond(HttpStatusCode.NotFound, error)
+    } catch (e: Exception) {
+        e.printStackTrace()
+        this.call.respond(HttpStatusCode.InternalServerError)
     }
 }
 

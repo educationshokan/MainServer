@@ -17,7 +17,9 @@ data class MediaFile(
 
 data class Deployment(
     @BsonId override var id: String = "",
-    val operationStatus: String
+    val projectId: String,
+    val operationStatus: String,
+    val deployedFiles: List<String> = listOf()
 ): Identifiable
 
 interface Identifiable {
