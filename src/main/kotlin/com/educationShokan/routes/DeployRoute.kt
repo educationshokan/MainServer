@@ -25,19 +25,28 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.io.File
+import java.nio.charset.Charset
 import java.nio.file.Files
 
-fun deploy(project: Project, deployId: String, excluded: List<String>?): Pair<Boolean, List<String>> {
+suspend fun deploy(project: Project, deployId: String, excluded: List<String>?): Pair<Boolean, List<String>> {
     val depFiles = project.files subtract (excluded ?: listOf())
     val folder = "deploy/$deployId".resourceFile
     if (folder.exists()) return Pair(false, listOf())
     Files.createDirectories(folder.toPath())
     depFiles.forEach {
-        val bytes = "storage/$it".resourceFile.readBytes()
+        var bytes = "storage/$it".resourceFile.readBytes()
+        val fileData = MediaRepository.read(it)
+        bytes = if (fileData.mimeType == "text/html") replaceHtml(bytes, deployId) else bytes
         val destination = File("$folder/$it")
         destination.writeBytes(bytes)
     }
     return Pair(true, depFiles.toList())
+}
+
+fun replaceHtml(bytes: ByteArray, deployId: String): ByteArray {
+    val charset = Charset.forName("UTF-8")
+    val text = bytes.toString(charset)
+    return text.replace("<id>", deployId).toByteArray(charset)
 }
 
 fun Route.deploy() {

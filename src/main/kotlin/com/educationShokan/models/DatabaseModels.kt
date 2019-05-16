@@ -5,6 +5,7 @@ import org.bson.codecs.pojo.annotations.BsonId
 data class Project(
     @BsonId override var id: String = "",
     val name: String,
+    val description: String,
     val files: List<String> = listOf()
 ) : Identifiable
 

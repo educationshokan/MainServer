@@ -40,7 +40,7 @@ fun Route.project() {
     */
     post {
         val request = call.receive<ProjectReq>()
-        val project = Project(name = request.name)
+        val project = Project(name = request.name, description = request.description ?: "")
         val id = ProjectRepository.create(project)
         call.response.header("Location", "/project/$id")
         call.respond(HttpStatusCode.Created)
@@ -59,7 +59,7 @@ fun Route.project() {
                 call.response.status(HttpStatusCode.NotFound)
                 call.respond("Element not found, name property not present in request".failure)
             } else {
-                ProjectRepository.create(Project(name = request.name))
+                ProjectRepository.create(Project(name = request.name, description = request.description ?: ""))
                 call.response.header("Location", "/project/$id")
                 call.respond(HttpStatusCode.Created)
             }
@@ -67,9 +67,10 @@ fun Route.project() {
         }
         project = project.copy(
             name = request.name ?: project.name,
-            files = request.files ?: project.files
+            description = request.description ?: project.description
         )
         ProjectRepository.update(project)
+        call.respond(HttpStatusCode.NoContent)
     }
 
     /*

@@ -12,7 +12,7 @@ object MediaRepository : CrudRepository<MediaFile>(Database.db.getCollection(), 
     suspend fun readAll() = collection.find().toList()
 
     suspend fun findByName(name: String): MediaFile = collection.findOne(nameFilter(name)) ?:
-    throw NotFoundException("Element of type ${clazz.simpleName} with id $name was not found")
+        throw NotFoundException("Element of type ${clazz.simpleName} with id $name was not found")
 
     private fun nameFilter(name: String): Bson {
         val prop = clazz.memberProperties.find { it.name == "fileName" } ?: throw Exception("Reflection Prop not found")

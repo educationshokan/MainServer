@@ -4,6 +4,7 @@ import com.educationShokan.config.config
 import com.educationShokan.extensions.resourceFile
 import com.educationShokan.routes.routes
 import io.ktor.application.Application
+
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 import java.nio.file.Files

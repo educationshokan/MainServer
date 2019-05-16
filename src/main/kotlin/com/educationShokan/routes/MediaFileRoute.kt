@@ -12,6 +12,7 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.request.receive
 import io.ktor.request.receiveStream
+import io.ktor.request.receiveText
 import io.ktor.response.header
 import io.ktor.response.respond
 import io.ktor.response.respondBytes
@@ -19,6 +20,7 @@ import io.ktor.routing.Route
 import io.ktor.routing.delete
 import io.ktor.routing.get
 import io.ktor.routing.post
+import java.util.*
 
 fun Route.mediaFile() {
 
@@ -34,12 +36,24 @@ fun Route.mediaFile() {
     post("/stream/{id}") {
         exceptionally {
             val id = call.parameters["id"] ?: ""
-            val stream = call.receiveStream()
-            val mediaFile = MediaRepository.read(id)
-            val storageFile = "storage/${mediaFile.id}".resourceFile
-            val bytes = stream.readBytes()
-            storageFile.writeBytes(bytes)
-            call.respond(HttpStatusCode.Created)
+            val encoded = call.request.queryParameters["encoded"] ?: "false"
+            if (encoded == "true") {
+                val text = call.receiveText()
+                    .replace("data:image/png;base64,", "")
+                val decoded = Base64.getDecoder().decode(text)
+                val mediaFile = MediaRepository.read(id)
+                val storageFile = "storage/${mediaFile.id}".resourceFile
+                storageFile.writeBytes(decoded)
+                call.respond(HttpStatusCode.Created)
+            } else {
+                val stream = call.receiveStream()
+                val mediaFile = MediaRepository.read(id)
+                val storageFile = "storage/${mediaFile.id}".resourceFile
+                val bytes = stream.readBytes()
+                storageFile.writeBytes(bytes)
+                call.respond(HttpStatusCode.Created)
+            }
+
         }
     }
 
