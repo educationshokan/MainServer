@@ -28,6 +28,8 @@ fun Application.config() {
         method(HttpMethod.Options)
         allowSameOrigin = true
         anyHost()
+        this.methods.add(HttpMethod.Put)
+        this.methods.add(HttpMethod.Delete)
         exposeHeader("Location")
     }
     install(Routing)
